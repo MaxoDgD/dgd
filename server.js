@@ -4,7 +4,7 @@ const mysql = require("mysql2");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// 🔌 CONEXIÓN A MYSQL (Railway)
+// 🔌 CONEXIÓN A MYSQL
 const db = mysql.createConnection({
   host: process.env.MYSQLHOST,
   user: process.env.MYSQLUSER,
@@ -15,9 +15,9 @@ const db = mysql.createConnection({
 
 db.connect((err) => {
   if (err) {
-    console.log("❌ Error conectando a DB:", err);
+    console.log("❌ ERROR CONECTANDO DB:", err);
   } else {
-    console.log("✅ Conectado a MySQL");
+    console.log("✅ DB CONECTADA");
   }
 });
 
@@ -34,8 +34,8 @@ app.get("/login", (req, res) => {
     [usuario],
     (err, result) => {
       if (err) {
-        console.log(err);
-        return res.send("ERROR");
+        console.log("❌ SQL LOGIN:", err);
+        return res.send(err.sqlMessage);
       }
 
       if (result.length > 0) {
@@ -63,7 +63,10 @@ app.get("/register", (req, res) => {
     "SELECT id FROM usuarios WHERE usuario = ?",
     [usuario],
     (err, result) => {
-      if (err) return res.send("ERROR");
+      if (err) {
+        console.log("❌ SQL CHECK USER:", err);
+        return res.send(err.sqlMessage);
+      }
 
       if (result.length > 0) {
         res.send("USUARIO_EXISTE");
@@ -72,13 +75,22 @@ app.get("/register", (req, res) => {
           "INSERT INTO usuarios (usuario, password) VALUES (?, ?)",
           [usuario, password],
           (err) => {
-            if (err) return res.send("ERROR");
+            if (err) {
+              console.log("❌ SQL INSERT:", err);
+              return res.send(err.sqlMessage);
+            }
+
             res.send("REGISTRO_OK");
           }
         );
       }
     }
   );
+});
+
+// ================= ROOT =================
+app.get("/", (req, res) => {
+  res.send("Servidor funcionando 🚀");
 });
 
 // ================= SERVER =================
