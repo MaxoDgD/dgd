@@ -15,9 +15,9 @@ const db = mysql.createConnection({
 
 db.connect((err) => {
   if (err) {
-    console.log("❌ ERROR CONECTANDO DB:", err);
+    console.log("ERROR CONECTANDO DB:", err);
   } else {
-    console.log("✅ DB CONECTADA");
+    console.log("DB CONECTADA");
   }
 });
 
@@ -34,7 +34,7 @@ app.get("/login", (req, res) => {
     [usuario],
     (err, result) => {
       if (err) {
-        console.log("❌ SQL LOGIN:", err);
+        console.log("SQL LOGIN:", err);
         return res.send(err.sqlMessage);
       }
 
@@ -64,7 +64,7 @@ app.get("/register", (req, res) => {
     [usuario],
     (err, result) => {
       if (err) {
-        console.log("❌ SQL CHECK USER:", err);
+        console.log("SQL CHECK USER:", err);
         return res.send(err.sqlMessage);
       }
 
@@ -76,7 +76,7 @@ app.get("/register", (req, res) => {
           [usuario, password],
           (err) => {
             if (err) {
-              console.log("❌ SQL INSERT:", err);
+              console.log("SQL INSERT:", err);
               return res.send(err.sqlMessage);
             }
 
@@ -90,7 +90,7 @@ app.get("/register", (req, res) => {
 
 // ================= ROOT =================
 app.get("/", (req, res) => {
-  res.send("Servidor funcionando 🚀");
+  res.send("Servidor activo gg ");
 });
 
 // ================= SERVER =================
